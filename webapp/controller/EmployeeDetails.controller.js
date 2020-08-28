@@ -11,29 +11,10 @@ sap.ui.define([
 
 	return Controller.extend("_sap.com.sap.demo.employeeservice.controller.EmployeeDetails", {
 		onInit: function () {
-			var data = jQuery.sap.syncGetJSON("/EmpService/employee/all").data;
-			this.oModel = new JSONModel(data);
-			this.getView().setModel(this.oModel);
-			this.oTable = this.byId("empDataTable");
-			this.oReadOnlyTemplate = this.oTable.removeItem(0);
-			this.rebindTable(this.oReadOnlyTemplate, "Navigation");
-			this.oEditableTemplate = new ColumnListItem({
-				cells: [
-					new Input({
-						value: "{id}"
-					}), new Input({
-						value: "{firstName}"
-					}), new Input({
-						value: "{lastName}"
-					}), new Input({
-						value: "{email}"
-					}), new Input({
-						value: "{contact}"
-					})
-				]
-			});
+			this.fetchUiData();
+			//jQuery.sap.syncGetJSON("/EmpService/employee/all").data;
 		},
-		
+
 		rebindTable: function (oTemplate, sKeyboardMode) {
 			this.oTable.bindItems({
 				path: "/",
@@ -79,26 +60,47 @@ sap.ui.define([
 			this.byId("cancelButton").setEnabled(false);
 			this.oModel.setProperty("/", this.aOldEmployeeData);
 			this.rebindTable(this.oReadOnlyTemplate, "Navigation");
-		}
+		},
 
-	/*	doAjaxCall: function (oData, sUrl, sType) {
+		fetchUiData: function () {
+			var that = this;
 			$.ajax({
-				type: sType,
-				url: sUrl,
+				type: "GET",
+				url: "/EmpService/employee/all",
 				dataType: "json",
-				data: oData,
+				data: [],
+				async: false,
 				contentType: "application/json",
 				success: function (oResponse) {
 					if (oResponse) {
-						MessageToast.show("Data Saved");
+						that.oModel = new JSONModel(oResponse);
+						that.getView().setModel(that.oModel);
+						that.oTable = that.byId("empDataTable");
+						that.oReadOnlyTemplate = that.oTable.removeItem(0);
+						that.rebindTable(that.oReadOnlyTemplate, "Navigation");
+						that.oEditableTemplate = new ColumnListItem({
+							cells: [
+								new Input({
+									value: "{id}"
+								}), new Input({
+									value: "{firstName}"
+								}), new Input({
+									value: "{lastName}"
+								}), new Input({
+									value: "{email}"
+								}), new Input({
+									value: "{contact}"
+								})
+							]
+						});
 					} else {
-						MessageBox.error("Data could not be saved. Please try later!");
+						MessageBox.error("Data could not be fetched. Please try later!");
 					}
 				},
 				error: function (error) {
 					MessageBox.error(error);
 				}
 			});
-		}*/
+		}
 	});
 });

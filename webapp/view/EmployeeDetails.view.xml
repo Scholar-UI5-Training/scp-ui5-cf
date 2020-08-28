@@ -1,0 +1,58 @@
+<mvc:View controllerName="_sap.com.sap.demo.employeeservice.controller.EmployeeDetails" xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+	xmlns="sap.m">
+	<Shell id="shell">
+		<App id="app">
+			<pages>
+				<Page id="page" title="Employee Data Management" titleAlignment="Center">
+					<content>
+						<Table id="empDataTable" items="{/}" mode="Delete" delete="onDelete">
+							<headerToolbar>
+								<OverflowToolbar>
+									<Title text="Employees" level="H2"/>
+									<ToolbarSpacer/>
+									<Button id="addButton" icon="sap-icon://add" visible="false" press="onAdd" tooltip="Add new employee"/>
+									<Button id="editButton" text="Edit" press="onEdit"/>
+								</OverflowToolbar>
+							</headerToolbar>
+							<columns>
+								<Column>
+									<Text text="Employee ID"/>
+								</Column>
+								<Column>
+									<Text text="First Name"/>
+								</Column>
+								<Column>
+									<Text text="Last Name"/>
+								</Column>
+								<Column>
+									<Text text="Email"/>
+								</Column>
+								<Column>
+									<Text text="Contact"/>
+								</Column>
+							</columns>
+							<items>
+								<ColumnListItem>
+									<cells>
+										<Text text="{id}"/>
+										<Text text="{firstName}"/>
+										<Text text="{lastName}"/>
+										<Text text="{email}"/>
+										<Text text="{contact}"/>
+									</cells>
+								</ColumnListItem>
+							</items>
+						</Table>
+					</content>
+					<footer>
+						<OverflowToolbar>
+							<ToolbarSpacer/>
+							<Button id="saveButton" enabled="false" type="Accept" text="Save" press="onSave"/>
+							<Button id="cancelButton" enabled="false" type="Reject" text="Cancel" press="onCancel"/>
+						</OverflowToolbar>
+					</footer>
+				</Page>
+			</pages>
+		</App>
+	</Shell>
+</mvc:View>
